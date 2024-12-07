@@ -1,19 +1,32 @@
-from . import  app
+from flask import render_template, request
 
-@app.route('/') 
-def home():    
+from mycrypto.models import ListaMovimientos
+
+from . import app
+
+
+@app.route('/')
+def home():
     """
-    Muestra las  compras en cryptomonedas y las conversiones  realizadas por el usuario 
+    Muestra las  compras en cryptomonedas y las conversiones  realizadas por el usuario     
     """
-    return 'lista de transcacciones'
+  
+    return render_template('home.html' )
 
 
-@app.route('/purchase')
+@app.route('/purchase', methods=['GET','POST'])
 def purchase():
-   """
-   Permite realizar compras o  conversiones entre cryptos
-   """ 
-   return 'Agregar nueva transacción'
+    """
+    Permite realizar compras o  conversiones entre cryptos
+    """
+    if request.method =='GET':       
+      return render_template('purchase.html')
+    
+    if request.method == 'POST':
+        return  request.form
+        
+   
+
 
 
 @app.route('/status')
@@ -24,4 +37,4 @@ def status():
     que existan en stock del usuario.
     """
 
-    return 'Estado de la inversión'
+    return render_template('status.html')
