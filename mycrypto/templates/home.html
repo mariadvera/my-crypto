@@ -5,7 +5,7 @@
 {% endblock head_title %} 
 
 {%  block page_title %}
-<h1>TRANSACCIONES</h1>
+<h1>MOVIMIENTOS</h1>
 {% endblock page_title %}
 
 
@@ -31,10 +31,10 @@
                     {% endif %}
                 </td>
                 <td class="dato hora">{{m.hora}}</td>
-                <td  class="dato from">{{m.de}}</td>
-                <td class="dato q">{{m.q}}</td>
-                <td class="dato to">{{m.a}}</td>
-                <td class="dato cantidad">{{m.cantidad}}</td>
+                <td class="dato moneda_origen">{{m.moneda_origen}}</td>
+                <td class="dato cantidad_origen">{{m.cantidad_origen}}</td>
+                <td class="dato to">{{m.moneda_destino}}</td>
+                <td class="dato cantidad">{{m.cantidad_destino}}</td>
                 <td class="dato precio_unitario">{{m.precio_unitario}}</td>
             </tr>
             {%  if m.has_errors %}

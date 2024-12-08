@@ -1,6 +1,6 @@
 from flask import render_template, request
 
-from mycrypto.models import ListaMovimientos
+from mycrypto.models import ListaMovimientos, ListaMovimientosDB,  ListaMovimientosCsv
 
 from . import app
 
@@ -9,9 +9,9 @@ from . import app
 def home():
     """
     Muestra las  compras en cryptomonedas y las conversiones  realizadas por el usuario     
-    """
-  
-    return render_template('home.html' )
+    """   
+    lista = ListaMovimientosDB
+    return render_template('home.html', movs = lista.movimientos )
 
 
 @app.route('/purchase', methods=['GET','POST'])
