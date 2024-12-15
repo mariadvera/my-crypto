@@ -1,8 +1,11 @@
-import os
+
 
 from flask import Flask
 
-RUTA_FICHERO = os.path.join('mycrypto' ,'data', 'movimientos.csv')
 
 app = Flask(__name__)
-print('El nombre de la app Flask es: ', __name__)
+app.config.from_object('config')
+
+print('***DATOS DE CONFIGURACION***_')
+print('SECRET KEY', app.config['SECRET_KEY'])
+print('RUTA BD', app.config['RUTADB'])

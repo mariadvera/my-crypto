@@ -1,0 +1,57 @@
+{% extends "base.html" %} 
+
+{% block head_title %} 
+{{ super() }}:Home
+{% endblock head_title %} 
+
+{%  block page_title %}
+<h1>MOVIMIENTOS</h1>
+{% endblock page_title %}
+
+
+{% block contenido %}
+
+<p>
+   <button id='boton-recarga'>Recarga</button>
+</p>
+<table class="paper tabla">
+    <tr class="fila">
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>From</th>
+        <th>Cantidad</th>
+        <th>To</th>
+        <th>Cantidad</th>
+        <th>Precio unitario</th>
+    </tr>
+    {% if movimientos %}
+    {% for movimiento in movimientos %}
+    <tr class="fila">
+        <td class="dato fecha">{{ movimiento.fecha }}</td>
+        <td class="dato hora">{{ movimiento.hora }}</td>
+        <td class="dato moneda_origen">{{ movimiento.moneda_origen }}</td>
+        <td class="dato cantidad_origen">{{ movimiento.cantidad_origen }}</td>
+        <td class="dato to">{{ movimiento.moneda_destino }}</td>
+        <td class="dato cantidad">{{ movimiento.cantidad_destino }}</td>
+        <td class="dato precio_unitario">{{ movimiento.precio_unitario }}</td>
+    </tr>
+    {% if movimiento.has_errors %}
+    <tr>
+        <td></td>
+        <td colspan="6">
+            <p class="error">
+                {% for error in movimiento.errores %}
+                {{ error }}<br>
+                {% endfor %}
+            </p>
+        </td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <tr>
+        <td colspan="7">No hay movimientos registrados.</td>
+    </tr>
+    {% endif %}
+</table>
+{% endblock contenido %}

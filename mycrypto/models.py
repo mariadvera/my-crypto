@@ -1,11 +1,12 @@
 
 from datetime import date
 
-import csv
 import sqlite3
 
-RUTA_FICHERO = 'mycrypto/data/movimientos.csv'
-RUTA_DB = 'mycrypto/data/mycrypto.db'
+from . import app
+
+
+
 
 
 class DBManager:
@@ -17,34 +18,33 @@ class DBManager:
         self.ruta = ruta
 
     def consultarSQL(self, consulta):
-      #1. conectar a la base de datos
-      conexion = sqlite3.connect(self.ruta)
+        # conectar a la base de datos
+        conexion = sqlite3.connect(self.ruta)
 
-      #2. Abrir cursor
-      cursor = conexion.cursor()
+        # Abrir cursor
+        cursor = conexion.cursor()
 
-      #3. Ejecutar la consulta
-      cursor.execute(consulta)
-
-      #4. Tratar los datos
-      # 4.1 Obtener los datos 
-      datos = cursor.fetchall()
-
-      # 4.2 guardar los datos localmente    
+        # Ejecutar la consulta
+        cursor.execute(consulta)
     
+        #  Obtener los datos 
+        datos = cursor.fetchall()
 
-      #5 cerrar la conexion
-      conexion.close()
+        #  guardar los datos localmente    
+        
 
-      #6. Devolver el resultado
-    #  return self.registros
-      return datos
+        # cerrar la conexion
+        conexion.close()  
+
+        # devolver los datos   
+        return datos  
+     
     
 class Movimiento:
 
     def __init__(self, dict_mov):
         self.errores = []
-
+        
         fecha = dict_mov.get('fecha', '')
         hora = dict_mov.get('hora', '')
         moneda_origen = dict_mov.get('moneda_origen','')
@@ -103,8 +103,8 @@ class ListaMovimientos:
 
     def cargar_movimientos(self):
         raise NotImplementedError(
-            'Debes usar una clase concreta de ListaMovimientos')
- 
+            'Debes usar una clase concreta de ListaMovimientos') 
+    
 
     def __str__(self):
         result = ''
@@ -115,12 +115,12 @@ class ListaMovimientos:
     def __repr__(self):
         return self.__str__()
     
-
 class ListaMovimientosDB(ListaMovimientos):
+  
     
     def cargar_movimientos(self):
-        db = DBManager(RUTA_DB)
-        sql = 'SELECT id, fecha, hora, moneda_origen, cantidad_origen, moneda_destino, cantidad destino, precio_unitario FROM  movimientos'
+        db = DBManager(app.config['RUTADB'])
+        sql = 'SELECT  id, fecha, hora, moneda_origen, cantidad_origen ,  moneda_destino ,  cantidad_destino  , precio_unitario  FROM   movimientos'   
         datos = db.consultarSQL(sql)
 
         self.movimientos = []
@@ -136,24 +136,8 @@ class ListaMovimientosDB(ListaMovimientos):
             }
             mov = Movimiento(mov_dict)
             self.movimientos.append(mov)
-    
 
-class  ListaMovimientosCsv(ListaMovimientos):
-    def __init__(self):
-        super().__init__()
-     
-
-    def cargar_movimientos(self):
-        self.movimientos = []
-        with open(RUTA_FICHERO, 'r') as fichero:
-            reader = csv.DictReader(fichero)
-            for fila in reader:
-                movimiento = Movimiento(fila)
-                self.movimientos.append(movimiento)
+           
 
     
-
-
-
-       
 
