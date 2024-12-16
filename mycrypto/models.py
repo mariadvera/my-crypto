@@ -30,14 +30,28 @@ class DBManager:
         #  Obtener los datos 
         datos = cursor.fetchall()
 
-        #  guardar los datos localmente    
+        self.registros = []
+        nombres_columna = []
+
+        for columna in cursor.description:
+            nombres_columna.append(columna[0])
+
+        #  guardar los datos localmente 
+        for dato in datos:
+            movimiento = {}
+            indice = 0
+            for nombre in nombres_columna:
+                movimiento[nombre] = dato[indice]
+                indice += 1
+            self.registros.append(movimiento)
+
         
 
         # cerrar la conexion
         conexion.close()  
 
-        # devolver los datos   
-        return datos  
+        # devolver resultado
+        return self.registros
      
     
 class Movimiento:
