@@ -1,11 +1,11 @@
 {% extends "base.html" %} 
 
 {% block head_title %} 
-{{ super() }}:Home
+{{ super()}}: inicio
 {% endblock head_title %} 
 
 {%  block page_title %}
-<h1>Movimientos</h1>
+<h1  class="movs">Movimientos</h1>
 {% endblock page_title %}
 
 
@@ -14,22 +14,21 @@
     <button id="boton-recarga">Recargar</button>
 </p>
 <table class="paper tabla">
-    <thead>
-  
-        <tr class="fila">
+    <thead>  
+        <tr class="fila ">
             <th class="cabecera feccha" >Fecha</th>
-            <th  class="cabecera">Hora</th>
+            <th class="cabecera">Hora</th>
             <th class="cabecera">From</th>
             <th class="cabecera">Cantidad</th>
             <th class="cabecera">To</th>
             <th class="cabecera">Cantidad</th>
-            <th class="cabecera">Precio unitario</th>
+            <th class="cabecera">Precio_unitario</th>
         </tr>
     </thead>
 
     <tbody  id="cuerpo-tabla">
         <tr class="fila">        
-            <td class="Lista-vacia" colspan="7">No hay movimientos registrados.</td>
+            <td class="lista-vacia" colspan="4">No hay movimientos registrados.</td>
         </tr>
     </tbody>   
    

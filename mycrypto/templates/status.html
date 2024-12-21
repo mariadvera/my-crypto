@@ -9,6 +9,15 @@
 {% endblock page_title %}
 
 {% block contenido %}
-<p>Aquí se muestra los datos del estado de la inversión</p>
+{% if resumen %}
+<ul>
+    <li>Total invertido: {{ resumen.invertido }} EUR</li>
+    <li>Saldo en euros: {{ resumen.saldo_euros }} EUR</li>
+    <li>Valor actual de criptos: {{ resumen.valor_criptos }} EUR</li>
+    <li>Valor total actual: {{ resumen.valor_actual }} EUR</li>
+</ul>
+{% else %}
+<p>No se pudo calcular el resumen.</p>
+{% endif %}
 
 {% endblock contenido%}

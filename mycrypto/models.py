@@ -1,7 +1,11 @@
 
-from datetime import date
+from datetime import  date
+
+import requests
 
 import sqlite3
+
+from config import API_KEY, BASE_URL
 
 from . import app
 
@@ -90,13 +94,14 @@ class Movimiento:
 
     @property
     def has_errors(self):
-            return len(self.errores) > 0
+        return len(self.errores) > 0
 
     def __str__(self):
-        return f'{self.fecha} | {self.hora} | {self.moneda_origen} | {self.cantidad_origen}|  {self.moneda_destino} | {self.cantidad_destino}  | {self.precio_unitario}'
+        return f'{self.fecha} | {self.hora} | {self.moneda_origen} |  {self.moneda_destino} | {self.cantidad_origen} | {self.cantidad_destino} |  {self.precio_unitario}'
 
     def __repr__(self):
         return self.__str__()
+      
 
 
 class ListaMovimientos:
@@ -134,24 +139,70 @@ class ListaMovimientosDB(ListaMovimientos):
     
     def cargar_movimientos(self):
         db = DBManager(app.config['RUTADB'])
-        sql = 'SELECT  id, fecha, hora, moneda_origen, cantidad_origen ,  moneda_destino ,  cantidad_destino  , precio_unitario  FROM   movimientos'   
+        sql = 'SELECT * FROM movimientos'   
         datos = db.consultarSQL(sql)
 
         self.movimientos = []
         for dato in datos:
             mov_dict = {
-                'fecha': dato[1],
-                'hora': dato[2],
-                'moneda_origen': dato[3],
+                'fecha':dato[1],
+                'hora':dato[2],
+                'moneda_origen':dato[3],
                 'cantidad_origen':dato[4],
-                'moneda_destino': dato[5],
+                'moneda_destino':dato[5],
                 'cantidad_destino':dato[6],
-                'precio_unitario': dato[7]
+                'precio_unitario':dato[7]
             }
             mov = Movimiento(mov_dict)
             self.movimientos.append(mov)
 
            
 
-    
+    def calcular_resumen(self):        
+        """
+        Euros invertidos: La cantidad total de euros gastados en transacciones de compra de criptomonedas.
+        Saldo en euros: La diferencia entre las compras de criptomonedas con euros y las ventas de criptomonedas a cambio de euros.
+        Valor actual de las criptomonedas: La cantidad total de cada criptomoneda en posesión convertida a euros según la tasa de cambio actual.
+        Valor actual total: La suma de euros invertidos, el saldo en euros, y el valor de las criptomonedas.
+        """
+        movimientos = self.movimientos
+
+        total_invertido = 0
+        saldo_euros = 0
+        valores_cripto = {}
+
+        for mov in movimientos:
+            moneda_origen = mov[3]
+            cantidad_origen = mov[4]
+            moneda_destino = mov[5]
+            cantidad_destino = mov[6]
+
+            # Calcular euros invertidos
+            if moneda_origen == 'EUR':
+                total_invertido += cantidad_origen
+                saldo_euros -= cantidad_origen
+            elif moneda_destino == 'EUR':
+                saldo_euros += cantidad_destino
+
+            # Calcular cantidad de criptos
+            if moneda_destino != 'EUR':
+                valores_cripto[moneda_destino] = valores_cripto.get(moneda_destino, 0) + cantidad_destino
+            if moneda_origen != 'EUR':
+                valores_cripto[moneda_origen] = valores_cripto.get(moneda_origen, 0) - cantidad_origen
+
+        # Obtener valor actual en euros de cada cripto
+        valor_actual_euros = 0
+        for cripto, cantidad in valores_cripto.items():
+            if cantidad > 0:
+                response = requests.get(f"{BASE_URL}/{cripto}/EUR", headers={"X-CoinAPI-Key": API_KEY})
+                if response.status_code == 200:
+                    rate = response.json().get('rate', 0)
+                    valor_actual_euros += cantidad * rate
+
+        return {
+            'invertido': total_invertido,
+            'saldo_euros': saldo_euros,
+            'valor_criptos': valor_actual_euros,
+            'valor_actual': total_invertido + saldo_euros + valor_actual_euros
+        }
 

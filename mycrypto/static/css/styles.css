@@ -57,7 +57,10 @@ header {
 .tabla .lista-vacia {
   text-align: center;
   padding: 25px;
-  color: var(--neutral-60);
+  vertical-align: middle;    
+  height: 100px;    
+  color: #888;
+ 
 } 
 
 .tabla .error {
@@ -72,95 +75,28 @@ header {
   border-top: solid thin#3217e4;
 }
 
-/* General reset */
-/* body,
-h1,
-h2,
-table,
-th,
-td {
-  margin: 0;
-  padding: 0;
-  font-family: 'Arial', sans-serif;
-  color: #ffffff;
-} */
-
-/* Body */
-/* body {
-  background-color: #1e1e2e;
-  color: #ffffff;
-  line-height: 1.6;
-  padding: 20px;
-} */
-
-/* Header */
-/* .header {
-  background: #27293d;
-  padding: 20px;
-  text-align: center;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-
-.header h1 {
-  font-size: 2em;
-  font-weight: bold; */
 
 
-/* Main container */
-/* .main-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background: #2c2f48;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-} */
+ .Lista-vacia {
 
-/* Transaction table */
-/* .transactions h2 {
-  margin-bottom: 10px;
-  font-size: 1.5em;
-  text-align: center;
-  font-weight: bold;
-}
+    text-align: center;
+  
+    vertical-align: middle;
+ 
+    height: 100px;
+  
+    color: #888;
+    
+  }
 
-.transaction-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
 
-.transaction-table thead {
-  background: #4a4d6b;
-}
 
-.transaction-table thead th {
-  padding: 15px;
-  text-align: left;
-  font-size: 1em;
-}
+  .movs {
+      text-align: center;
+      vertical-align: 0%;
+      height: 30px;
+      font-size: 42px;
+      color: #181717;
+    }
 
-.transaction-table tbody tr {
-  border-bottom: 1px solid #3a3e5a;
-} */
 
-/* .transaction-table tbody tr:nth-child(even) {
-  background: #33344e;
-}
-
-.transaction-table tbody td {
-  padding: 10px 15px;
-  text-align: left;
-}
-
-.transaction-table tbody td:last-child {
-  font-weight: bold;
-  color: #50fa7b;
-}
-
-/* Hover effect for rows */
-/* .transaction-table tbody tr:hover {
-  background: #44466a;
-  cursor: pointer;
-} */ 

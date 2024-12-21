@@ -1,27 +1,47 @@
- {% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block head_title %}
-{{ super() }}:purchase
+Compra de Criptomonedas
 {% endblock head_title %}
 
 {% block page_title %}
-<h1>COMPRA DE CRYPTOS</h1>
-{% endblock page_title %}  
+<h1>Compra de Criptomonedas</h1>
+{% endblock page_title %}
 
-
-{% block content %}
-<form method="POST">
+{% block contenido %}
+<form method="POST" id="purchase-form">
     {{ form.hidden_tag() }}
-    {{ form.moneda_origen.label }} {{ form.moneda_origen() }}<br>
-    {{ form.cantidad_origen.label }} {{ form.cantidad_origen() }}<br>
-    {{ form.moneda_destino.label }} {{ form.moneda_destino() }}<br>
-    {{ form.submit_calcular() }}
-    {{ form.submit_confirmar() }}
+
+    <div>
+        <label for="from_currency">Moneda Origen:</label>
+        {{ form.from_currency(class="form-control", id="from_currency") }}
+    </div>
+
+    <div>
+        <label for="from_amount">Cantidad Origen:</label>
+        {{ form.from_amount(class="form-control", id="from_amount") }}
+    </div>
+
+    <div>
+        <label for="to_currency">Moneda Destino:</label>
+        {{ form.to_currency(class="form-control", id="to_currency") }}
+    </div>
+
+    <div>
+        <label for="unit_price">Precio Unitario:</label>
+        {{ form.unit_price(class="form-control", id="unit_price", readonly=True) }}
+    </div>
+
+    <div>
+        <label for="to_amount">Cantidad Destino:</label>
+        {{ form.to_amount(class="form-control", id="to_amount", readonly=True) }}
+    </div>
+
+    <div>
+        {{ form.simulate(class="btn btn-primary", id="simulate") }}
+        {{ form.confirm(class="btn btn-success", id="confirm") }}
+    </div>
 </form>
-{% if cantidad_destino and precio_unitario %}
-<p>Cantidad Destino: {{ cantidad_destino }} {{ form.moneda_destino.data }}</p>
-<p>Precio Unitario: {{ precio_unitario }}</p>
-{% endif %}
-{% endblock %}
 {% endblock contenido %}
+
 
