@@ -1,13 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, SubmitField, SelectField, HiddenField
+from wtforms import StringField, SubmitField, DecimalField, SelectField
 from wtforms.validators import DataRequired, NumberRange
+
 
 from config import MONEDAS
 
 
 class PurchaseForm(FlaskForm):
-    def __init__(self, *args, **kwargs):
-       
+    def __init__(self, *args, **kwargs):       
         super().__init__(*args, **kwargs)
         self.from_currency.choices = MONEDAS
         self.to_currency.choices = MONEDAS
@@ -22,10 +22,10 @@ class PurchaseForm(FlaskForm):
         choices=[],  
         validators=[DataRequired()]
     )
-    from_amount = FloatField('Cantidad Origen', validators=[
-                             DataRequired(), NumberRange(min=0.01)])
-    unit_price = FloatField('Precio Unitario')
-    to_amount = FloatField('Cantidad Destino')
+    from_amount = DecimalField('Cantidad Origen', validators=[
+                  DataRequired(), NumberRange(min=0.01)])
+    unit_price = DecimalField('Precio Unitario')
+    to_amount = DecimalField('Cantidad Destino')
     simulate = SubmitField('Simular')
     confirm = SubmitField('Confirmar')
 
