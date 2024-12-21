@@ -4,6 +4,7 @@ from  .forms import PurchaseForm
 from .models import DBManager, ListaMovimientosDB, Movimiento
 from flask import   app, flash, jsonify,  redirect, url_for
 import requests
+from . import app
 from config import API_KEY, BASE_URL
 
 
