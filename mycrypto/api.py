@@ -2,7 +2,7 @@
 from datetime import date, datetime
 from mycrypto.forms import PurchaseForm
 from .models import DBManager, ListaMovimientosDB, Movimiento
-from flask import   app, flash, jsonify, redirect, request, url_for
+from flask import   app, flash, jsonify,  redirect, url_for
 import requests
 from config import API_KEY, BASE_URL
 
@@ -28,7 +28,7 @@ def inicio():
     return jsonify(resultado), status_code    
 
    
-@app.route('/api/v1/calculaate', methods=['GET', 'POST'])
+@app.route('/api/v1/calculate', methods=['GET', 'POST'])
 def simulatePurchase():
     form = PurchaseForm()
     if form.validate_on_submit():          
@@ -52,19 +52,19 @@ def simulatePurchase():
             return jsonify({'error': 'Error al consultar la API.'}), 500
         
 
-@app.route('/api/v1/purchase', methods=['GET', 'POST'])
+@app.route('/api/v1/purchase', methods=['POST'])
 def confirmPurchase():
-        if request.form.get('action') == 'confirm':
-           nuevo_movimiento = Movimiento({
-              'fecha': date.today().isoformat(),
-              'hora': datetime.now().strftime('%H:%M:%S'),
-              'moneda_origen': form.from_currency.data,
-              'cantidad_origen': form.from_amount.data,
-              'moneda_destino': form.to_currency.data,
-              'cantidad_destino': form.to_amount.data,
-              'precio_unitario': form.unit_price.data
-          })
-           
+    form = PurchaseForm()
+    if form.validate_on_submit():
+        nuevo_movimiento = Movimiento({
+            'fecha': date.today().isoformat(),
+            'hora': datetime.now().strftime('%H:%M:%S'),
+            'moneda_origen': form.from_currency.data,
+            'cantidad_origen': form.from_amount.data,
+            'moneda_destino': form.to_currency.data,
+            'cantidad_destino': form.to_amount.data,
+            'precio_unitario': form.unit_price.data
+        })
         lista = ListaMovimientosDB()
         lista.agregar(nuevo_movimiento)
         flash("Transacción confirmada.", "success")

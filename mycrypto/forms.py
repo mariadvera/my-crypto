@@ -1,26 +1,34 @@
-# forms.py
 from flask_wtf import FlaskForm
-from wtforms import SelectField, DecimalField, SubmitField
+from wtforms import StringField, FloatField, SubmitField, SelectField, HiddenField
 from wtforms.validators import DataRequired, NumberRange
+
 from config import MONEDAS
 
 
 class PurchaseForm(FlaskForm):
-    def __init__(self, ):
+    def __init__(self, *args, **kwargs):
        
-        
+        super().__init__(*args, **kwargs)
         self.from_currency.choices = MONEDAS
         self.to_currency.choices = MONEDAS
 
-    from_currency = SelectField('Moneda Origen', validators=[DataRequired()])
-    to_currency = SelectField('Moneda Destino', validators=[DataRequired()])
-    from_amount = DecimalField('Cantidad Moneda Origen', validators=[
-                               DataRequired(), NumberRange(min=0)])
-    unit_price = DecimalField('Precio Unitario', render_kw={"readonly": True})
-    to_amount = DecimalField('Cantidad Moneda Destino',
-                             render_kw={"readonly": True})
+    from_currency = SelectField(
+        'Moneda Origen',
+        choices=[],  
+        validators=[DataRequired()]
+    )
+    to_currency = SelectField(
+        'Moneda Destino',
+        choices=[],  
+        validators=[DataRequired()]
+    )
+    from_amount = FloatField('Cantidad Origen', validators=[
+                             DataRequired(), NumberRange(min=0.01)])
+    unit_price = FloatField('Precio Unitario')
+    to_amount = FloatField('Cantidad Destino')
     simulate = SubmitField('Simular')
     confirm = SubmitField('Confirmar')
-    
+
+
 
   
